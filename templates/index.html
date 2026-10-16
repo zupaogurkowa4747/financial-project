@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Skarbiec</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    
+
+    <div class="skarbiec">
+        <p class="etykieta">🏦 SKARBIEC</p>
+        <p class="saldo">{{ "%.2f"|format(suma) }} zł</p>
+        <p class="podsumowanie">
+            Wpłacono: {{ "%.2f"|format(wplaty) }} zł | Wypłacono: {{ "%.2f"|format(wyplaty) }} zł
+        </p>
+        <form action="/wplata" method="POST" class="wplata">
+            <input type="number" step="0.01" min="0.01" max='1000000000' name="kwota" placeholder="Kwota" required>
+            <button type="submit">+ Dodaj wpłatę</button>
+        </form>
+    </div>
+
+    <a href="{{ url_for('wydatki') }}" class="link-wydatki">Pokaż swoje wydatki!</a>
+
+    {% for wiadomosc in get_flashed_messages() %}
+        <p class="blad">{{ wiadomosc }}</p>
+        {% endfor %}
+
+    <div class="rada">
+        <form action="/rada" method="POST">
+        <button type="submit">💡 Daj radę</button>
+    </form>
+
+    {% if ai_rada %}
+        <p>{{ ai_rada }}</p>
+        {% endif %}
+    </div>
+
+    <h2>Historia</h2>
+    <ul class="historia">
+        {% for t in transakcje[:5] %}   
+            <li class="{% if t[2] == 'wpłata' %}plus{% else %}minus{% endif %}">
+                {{ t[0] }} | {{ "%.2f"|format(t[1]) }} zł | {{ t[2] }}
+                <form action="/usun" method="POST" style="display:inline"
+                    onsubmit="return confirm('Usunąć ten wpis?')">
+                    <input type="hidden" name="id" value="{{ t[3] }}">        
+                    <button type="submit">X</button>        
+                </form>
+            </li>
+        {% else %}
+            <li>Brak transakcji</li>
+        {% endfor %}
+    </ul>
+
+    {% if transakcje|length > 5 %}
+        <details class="wiecej">
+            <summary>Pokaż starsze ({{ transakcje|length - 5 }})</summary>
+            <ul class="historia">
+                {% for t in transakcje[5:] %}
+                    <li class="{% if t[2] == 'wpłata' %}plus{% else %}minus{% endif %}">
+                        {{ t[0] }} | {{ "%.2f"|format(t[1]) }} zł | {{ t[2] }}
+                        <form action="/usun" method="POST" style="display:inline"
+                            onsubmit="return confirm('Usunąć ten wpis?')">
+                            <input type="hidden" name="id" value="{{ t[3] }}">        
+                            <button type="submit">X</button>        
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        </details>
+    {% endif %}
+
+    <details class="wyplata-box">
+        <summary>Wypłata</summary>
+        <form action="/wyplata" method="POST"
+            onsubmit="return confirm('Na pewno chcesz wypłacić te pieniądze?')">
+            <input type="number" step="0.01" min="0.01" name="kwota" placeholder="Kwota" required>
+            <button type="submit">Wypłać</button>
+        </form>
+    </details>
+
+</body>
+
+</html>

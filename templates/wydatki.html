@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Skarbiec</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <a href="{{ url_for('index') }}">Strona Główna</a>
+    <h1>Wydatki</h1>
+
+    <h2>Podsumowanie</h2>
+    <p>Razem wydano: {{ "%.2f"|format(suma_wydatkow) }} zł</p>
+    <ul>
+        {% for kategoria, suma in wynik_grupowania %}
+            <li>{{kategoria }}: {{ "%.2f"|format(suma) }} zł</li>
+            {% else %}
+            <li>Brak wydatków</li>  
+        {% endfor %}
+    </ul>
+
+    <form action="/dodaj_wydatek" method="POST">
+        <input type="number" step="0.01" min="0.01" name="kwota" placeholder="Kwota" required>
+        <select name="kategoria">
+            <option value="jedzenie">Jedzenie</option>
+            <option value="rachunki">Rachunki</option>
+            <option value="rozrywka">Rozrywka</option>
+            <option value="inne">Inne</option>
+        </select>
+        <input type="text" name="opis" placeholder="Na co? (np. pizza)">
+        <button type="submit">Dodaj wydatek</button>
+    </form>
+
+    <ul>
+        {% for w in lista %}
+            <li>{{ w[0] }} | {{ "%.2f"|format(w[1]) }} zł | {{ w[2] }} | {{ w[3] }}</li>
+        {% else %}
+            <li>Brak wydatków</li>
+        {% endfor %}
+    </ul>
+
+    <div class="rada">
+        <form action="/rada_wydatki" method="POST">
+            <button type="submit">💡 Czy dobrze wykorzystuję pieniądze? (RADA AI)</button>
+        </form>
+
+    {% if ai_rada %}
+        <p>{{ ai_rada }}</p>
+    {% endif %}
+    </div>
+
+</body>
+</html>

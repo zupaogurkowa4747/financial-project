@@ -1,0 +1,113 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.skarbiec {
+    background: linear-gradient(135deg, #b45309, #fbbf24);
+    color: #1c1917;
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.etykieta { letter-spacing: 4px; font-weight: bold; margin: 0;}
+.saldo { font-size: 56px; font-weight: bold; margin: 10px 0 25px;}
+
+.wplata input {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.wplata button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #166534;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.wplata button:hover { background: #15803d; }
+
+.rada {
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 5px 20px;
+    margin: 25px 0;
+}
+
+.historia {list-style: none; padding: 0; }
+.historia li {
+    background: #1e293b;
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin-bottom: 6px;
+}
+
+.wyplata-box { font-size: 12px; opacity: 0.55; }
+.wyplata-box:hover, .wyplata-box[open] {
+    opacity: 1;
+}
+.wyplata-box summary {cursor: pointer;}
+.wyplata-box input, .wyplata-box button { padding: 6px; margin-top: 10px}
+
+.blad {
+    background: #7f1d1d;
+    color: #ffffff;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.historia li.plus {
+    border-left: 5px solid #16a34a;
+}
+
+.historia li.minus {
+    border-left: 5px solid #dc2626;
+}
+
+.skarbiec .podsumowanie {
+    font-size: 16px;
+    color: #1c1917;
+    margin-top: 10px;
+
+}
+
+.historia button {
+    background: #ff2a00;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 4px 8px;
+    float: right;
+    cursor: pointer;
+}
+.historia button:hover {
+    background: #b31f1f;
+}
+
+.rada button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0px 8px;
+    cursor: pointer;
+}
+
+.link-wydatki {
+    display: flex;
+    justify-content: center;
+    color: #ffffff;
+    margin-top: 12px;
+    text-decoration: none;
+}
