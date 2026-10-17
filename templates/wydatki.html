@@ -33,16 +33,25 @@
 
     <ul>
         {% for w in lista %}
-            <li>{{ w[0] }} | {{ "%.2f"|format(w[1]) }} zł | {{ w[2] }} | {{ w[3] }}</li>
+            <li>
+                {{ w[0] }} | {{ "%.2f"|format(w[1]) }} zł | {{ w[2] }} | {{ w[3] }}
+                <form action="/usun_wydatek" method="POST" style="display:inline"
+                    onsubmit="return confirm('Usunąć ten wpis?')">
+                    <input type="hidden" name="id" value="{{ w[4] }}">        
+                    <button type="submit" class="usun_wydatek">X</button>        
+                </form>
+            </li>
         {% else %}
             <li>Brak wydatków</li>
         {% endfor %}
     </ul>
 
-    <div class="rada">
-        <form action="/rada_wydatki" method="POST">
-            <button type="submit">💡 Czy dobrze wykorzystuję pieniądze? (RADA AI)</button>
-        </form>
+<div class="rada">
+    <form action="/rada_wydatki" method="POST"
+          onsubmit="const btn = this.querySelector('button'); btn.textContent='Generowanie rady...'; setTimeout(() => btn.disabled = true, 10);">
+        <button type="submit">💡 Czy dobrze wykorzystuję pieniądze? (RADA AI)</button>
+    </form>
+
 
     {% if ai_rada %}
         <p>{{ ai_rada }}</p>

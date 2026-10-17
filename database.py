@@ -96,3 +96,7 @@ def pobierz_pozycje_miesiaca(miesiac):
     with get_db() as cursor:
         cursor.execute("SELECT kategoria, kwota, opis FROM wydatki WHERE data LIKE ? ORDER BY id DESC LIMIT 30", (miesiac + "%",))
         return cursor.fetchall()
+
+def usun_wydatek(id):
+    with get_db() as cursor:
+        cursor.execute("DELETE FROM wydatki WHERE id = ?", (id,))

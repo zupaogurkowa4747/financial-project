@@ -2,8 +2,9 @@ from datetime import date
 import os
 from dotenv import load_dotenv
 from flask import Flask, redirect, render_template, request, url_for, flash
-from database import init_db, pobierz_wszystkie_transakcje, dodaj_transakcje, pobierz_sume, pobierz_wplaty, pobierz_wyplaty, usun_transakcje, pobierz_wydatki, dodaj_wydatek, pobierz_sume_wydatkow, pobierz_wydatki_wg_kategorii, pobierz_wydatki_miesiaca, pobierz_pozycje_miesiaca
+from database import init_db, pobierz_wszystkie_transakcje, dodaj_transakcje, pobierz_sume, pobierz_wplaty, pobierz_wyplaty, usun_transakcje, pobierz_wydatki, dodaj_wydatek, pobierz_sume_wydatkow, pobierz_wydatki_wg_kategorii, pobierz_wydatki_miesiaca, pobierz_pozycje_miesiaca, usun_wydatek
 from google import genai
+from livereload import Server
 load_dotenv()  
 client = genai.Client(api_key=os.getenv("GENAI_API_KEY"))  
 
@@ -109,7 +110,18 @@ def rada_wydatki():
         ai_rada = zapytaj_ai(prompt)
     return render_template('wydatki.html', **dane_wydatkow(ai_rada=ai_rada))
 
+@app.route('/usun_wydatek', methods=['POST'])
+def usun_caly_wydatek():
+    id = request.form.get('id')
+    if id:
+        usun_wydatek(int(id))
+    return redirect(url_for('wydatki'))
+
 if __name__ == '__main__':
     init_db()
-    app.run(debug=True)
+    server = Server(app.wsgi_app)
+
+    server.watch('templates/*.html')
+    server.watch('static/*.css')
+    server.serve(port=5000, debug=True)
 
