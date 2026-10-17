@@ -86,3 +86,13 @@ def pobierz_sume_wydatkow():
             cursor.execute("SELECT SUM(kwota) FROM wydatki")
             wynik = cursor.fetchone()[0]
             return wynik if wynik is not None else 0
+
+def pobierz_wydatki_miesiaca(miesiac):
+    with get_db() as cursor:
+        cursor.execute("SELECT kategoria, SUM(kwota) FROM wydatki WHERE data LIKE ? GROUP BY kategoria ORDER BY SUM(kwota) DESC", (miesiac + "%",))
+        return cursor.fetchall()
+
+def pobierz_pozycje_miesiaca(miesiac):
+    with get_db() as cursor:
+        cursor.execute("SELECT kategoria, kwota, opis FROM wydatki WHERE data LIKE ? ORDER BY id DESC LIMIT 30", (miesiac + "%",))
+        return cursor.fetchall()
