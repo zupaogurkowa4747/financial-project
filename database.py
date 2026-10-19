@@ -34,6 +34,31 @@ def init_db():
                 opis TEXT NOT NULL
                 )''')
 
+    with get_db() as cursor:
+        cursor.execute("""
+                    CREATE TABLE IF NOT EXISTS ustawienia (
+                    klucz TEXT PRIMARY KEY,
+                    wartosc TEXT NOT NULL)""")
+
+def zapisz_zarobki(kwota):
+    with get_db() as cursor:
+        cursor.execute("INSERT OR REPLACE INTO ustawienia (klucz, wartosc) VALUES (?, ?)", ("zarobki", kwota ))
+
+def pobierz_zarobki():
+    with get_db() as cursor:
+        cursor.execute("SELECT wartosc FROM ustawienia WHERE klucz = ?", ("zarobki",))
+        wynik = cursor.fetchone()
+        return float(wynik[0]) if wynik is not None else 0
+
+def zapisz_opis(tekst):
+    with get_db() as cursor:
+        cursor.execute("INSERT OR REPLACE INTO ustawienia (klucz, wartosc) VALUES (?, ?)",('opis_sytuacji', tekst))
+
+def pobierz_opis():
+    with get_db() as cursor:
+        cursor.execute("SELECT wartosc FROM ustawienia WHERE klucz = ?", ("opis_sytuacji",))
+        wynik = cursor.fetchone()
+        return wynik[0] if wynik is not None else ""
 
 def pobierz_wszystkie_transakcje():
     with get_db() as cursor:

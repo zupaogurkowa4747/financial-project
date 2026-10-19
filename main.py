@@ -2,7 +2,7 @@ from datetime import date
 import os
 from dotenv import load_dotenv
 from flask import Flask, redirect, render_template, request, url_for, flash
-from database import init_db, pobierz_wszystkie_transakcje, dodaj_transakcje, pobierz_sume, pobierz_wplaty, pobierz_wyplaty, usun_transakcje, pobierz_wydatki, dodaj_wydatek, pobierz_sume_wydatkow, pobierz_wydatki_wg_kategorii, pobierz_wydatki_miesiaca, pobierz_pozycje_miesiaca, usun_wydatek
+from database import init_db, pobierz_wszystkie_transakcje, pobierz_opis, zapisz_opis, dodaj_transakcje, pobierz_sume, pobierz_wplaty, pobierz_wyplaty, usun_transakcje, pobierz_wydatki, dodaj_wydatek, pobierz_sume_wydatkow, pobierz_wydatki_wg_kategorii, pobierz_wydatki_miesiaca, pobierz_pozycje_miesiaca, zapisz_zarobki, pobierz_zarobki, usun_wydatek
 from google import genai
 from livereload import Server
 load_dotenv()  
@@ -65,14 +65,6 @@ def usun():
         usun_transakcje(int(id))
     return redirect(url_for('index'))
 
-def dane_wydatkow(ai_rada=""):
-    return {
-        "lista": pobierz_wydatki(),
-        "wynik_grupowania": pobierz_wydatki_wg_kategorii(),
-        "suma_wydatkow": pobierz_sume_wydatkow(),
-        "ai_rada": ai_rada,
-    }
-
 @app.route('/wydatki')
 def wydatki():
     return render_template('wydatki.html', **dane_wydatkow())
@@ -101,12 +93,20 @@ def rada_wydatki():
     else:
         pozycje = pobierz_pozycje_miesiaca(miesiac)
         razem = sum(s for k, s in grupy)
+        zarobki = pobierz_zarobki()
+        opis = pobierz_opis()
+        kontekst = ""
+        if zarobki > 0:
+            kontekst += f"Miesięczny dochód użytkownika: {zarobki:.2f} zł."
+        if opis:
+            kontekst += f"Opis sytuacji użytkownika: {opis} "
         prompt = f"""W miesiącu {miesiac} użytkownik wydał łącznie {razem: .2f} zł. Wydatki wg kategorii: {opis_wydatkow(grupy)}.
+        {kontekst}
         Pojedyncze wydatki: {opis_pozycji(pozycje)}
     Na koncie oszczędnościowym (skarbcu) ma {pobierz_sume():.2f} zł. 
     Oceń krótko po polsku, co robi dobrze, co źle, i stwierdź, które kategorie można byłoby ograniczyć w następnym miesiącu. Ocena to przypuszczenie.
     Oceń, które wydatki były potrzebne, a które impulsywne i były stratą pieniędzy
-    Odpowiedz zwykłym tekstem: bez gwiazdek, bez markdown, bez nagłówków. Maksymalnie 4 zdania."""
+    Odpowiedz zwykłym tekstem: bez gwiazdek, bez markdown, bez nagłówków. Maksymalnie 4 zdania. Uwzględnij sytuacje użytkownika."""
         ai_rada = zapytaj_ai(prompt)
     return render_template('wydatki.html', **dane_wydatkow(ai_rada=ai_rada))
 
@@ -116,6 +116,30 @@ def usun_caly_wydatek():
     if id:
         usun_wydatek(int(id))
     return redirect(url_for('wydatki'))
+
+
+@app.route('/zarobki', methods=['POST'])
+def zarobki_trasa():
+    kwota = request.form.get('zarobki')
+    if kwota and 0 < float(kwota) <= 1000000000:
+        zapisz_zarobki(float(kwota))
+    return redirect(url_for('wydatki'))
+
+@app.route('/opis', methods=["POST"])
+def opis_trasa():
+    opis = request.form.get('opis')
+    zapisz_opis(opis.strip())
+    return redirect(url_for('wydatki'))
+
+def dane_wydatkow(ai_rada=""):
+    return {
+        "lista": pobierz_wydatki(),
+        "wynik_grupowania": pobierz_wydatki_wg_kategorii(),
+        "suma_wydatkow": pobierz_sume_wydatkow(),
+        "ai_rada": ai_rada,
+        "zarobki": pobierz_zarobki(),
+        "opis": pobierz_opis()
+    }
 
 if __name__ == '__main__':
     init_db()

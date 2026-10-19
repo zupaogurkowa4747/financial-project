@@ -141,3 +141,179 @@ li {
     padding: 4px 8px;
     cursor: pointer;
 }
+h1 {
+    text-align: center;
+    color: #fbbf24;
+}
+
+.karta {
+    background: #1e293b;
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+.karta h2 {
+    margin-top: 0;
+    font-size: 18px;
+    color: #fbbf24;
+}
+
+.karta ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.karta li {
+    padding: 8px 0;
+    border-bottom: 1px solid #334155;
+}
+
+.karta li:last-child {
+    border-bottom: none;
+}
+
+.razem {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 0;
+}
+
+.formularz {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.karta input,
+.karta select,
+.karta textarea {
+    background: #0f172a;
+    color: #e2e8f0;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 15px;
+    font-family: inherit;
+}
+
+.karta input:focus,
+.karta select:focus,
+.karta textarea:focus {
+    outline: none;
+    border-color: #fbbf24;
+}
+
+.formularz input[type="number"],
+.formularz input[type="text"] {
+    flex: 1;
+    min-width: 120px;
+}
+
+.formularz textarea {
+    width: 100%;
+    min-height: 80px;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.karta button {
+    background: #fbbf24;
+    color: #1c1917;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.karta button:hover {
+    background: #f59e0b;
+}
+
+.karta .usun_wydatek {
+    background: #ff2a00;
+    color: white;
+    padding: 4px 10px;
+}
+
+.karta .usun_wydatek:hover {
+    background: #b31f1f;
+}
+
+.karta.rada button {
+    background: #2563eb;
+    color: white;
+}
+
+.karta.rada button:hover {
+    background: #1d4ed8;
+}
+
+.blok {
+    background: #1e293b;
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+.blok h2 {
+    margin-top: 0;
+    font-size: 18px;
+    color: #fbbf24;
+}
+
+.blok .historia li {
+    background: #0f172a;
+}
+
+.historia li form {
+    margin: 0;
+}
+
+.wiecej summary {
+    cursor: pointer;
+    margin: 12px 0;
+    color: #fbbf24;
+}
+
+.rada button {
+    padding: 10px 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.rada button:hover {
+    background: #1d4ed8;
+}
+
+.wyplata-box {
+    font-size: 14px;
+    padding: 0 4px;
+}
+
+.wyplata-box input {
+    background: #1e293b;
+    color: #e2e8f0;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.wyplata-box button {
+    background: #334155;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    cursor: pointer;
+}
+
+.wyplata-box button:hover {
+    background: #dc2626;
+}
