@@ -30,23 +30,27 @@ def zapytaj_ai(prompt):
         print("Błąd ai: ", e)
         return "Nie udało się wygenerować tekstu AI."
 
+
 @app.route('/')
 def index():
-    return render_template('index.html', **dane_strony())
+    dzisiejsza_data = date.today().strftime("%Y-%m-%d")
+    return render_template('index.html', dzisiejsza_data=dzisiejsza_data, **dane_strony())
 
 @app.route('/wplata', methods=['POST'])
 def wplata():
+    data = request.form.get("ustaw_date")
     kwota = request.form.get('kwota')
     if kwota and 0 < float(kwota) <= 1000000000:
-        dodaj_transakcje(str(date.today()), float(kwota), "wpłata")
+        dodaj_transakcje(data, float(kwota), "wpłata")
     return redirect(url_for('index'))
 
 @app.route('/wyplata', methods=['POST'])
 def wyplata():
     kwota = request.form.get('kwota')
+    data = request.form.get("ustaw_date")
     if kwota and float(kwota) > 0:
         if float(kwota) <= pobierz_sume():
-            dodaj_transakcje(str(date.today()), -float(kwota), "wypłata")
+            dodaj_transakcje(data, -float(kwota), "wypłata")
         else:
             flash("Nie masz wystarczających środków na wypłatę tej kwoty.")
     return redirect(url_for('index'))
@@ -71,11 +75,12 @@ def wydatki():
 
 @app.route('/dodaj_wydatek', methods=["POST"])
 def dodaj_wydatek_trasa():
+    data = request.form.get("ustaw_date")
     kwota = request.form.get('kwota')
     kategoria = request.form.get('kategoria')
     opis = request.form.get('opis')
     if kwota and 0 < float(kwota) <= 1000000000:
-        dodaj_wydatek(str(date.today()), float(kwota), kategoria, opis)
+        dodaj_wydatek(data, float(kwota), kategoria, opis)
     return(redirect(url_for('wydatki')))
 
 def opis_wydatkow(grupy):

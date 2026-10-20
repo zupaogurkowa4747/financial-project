@@ -36,6 +36,10 @@
     <div class="karta">
         <h2>➕ Dodaj wydatek</h2>
         <form action="/dodaj_wydatek" method="POST" class="formularz">
+                        <input type="date" name="ustaw_date"
+       value="{{ dzisiejsza_data }}"
+       min="2000-01-01"
+       max="{{ dzisiejsza_data }}" required>
             <input type="number" step="0.01" min="0.01" name="kwota" placeholder="Kwota" required>
             <select name="kategoria">
                 <option value="jedzenie">Jedzenie</option>

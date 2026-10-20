@@ -13,6 +13,7 @@
             Wpłacono: {{ "%.2f"|format(wplaty) }} zł | Wypłacono: {{ "%.2f"|format(wyplaty) }} zł
         </p>
         <form action="/wplata" method="POST" class="wplata">
+            <input type="date" name="ustaw_date" value="{{ dzisiejsza_data }}" min="2000-01-01" max="{{ dzisiejsza_data }}" required>
             <input type="number" step="0.01" min="0.01" max="1000000000" name="kwota" placeholder="Kwota" required>
             <button type="submit">+ Dodaj wpłatę</button>
         </form>
@@ -73,6 +74,10 @@
         <summary>Wypłata</summary>
         <form action="/wyplata" method="POST"
             onsubmit="return confirm('Na pewno chcesz wypłacić te pieniądze?')">
+            <input type="date" name="ustaw_date"
+       value="{{ dzisiejsza_data }}"
+       min="2000-01-01"
+       max="{{ dzisiejsza_data }}" required>
             <input type="number" step="0.01" min="0.01" name="kwota" placeholder="Kwota" required>
             <button type="submit">Wypłać</button>
         </form>
