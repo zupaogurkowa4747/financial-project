@@ -146,6 +146,13 @@ def dane_wydatkow(ai_rada=""):
         "opis": pobierz_opis()
     }
 
+def sprawdz_date(data):
+    dzisiaj = date.today().isoFormat()
+
+    if data < "2000-01-01":
+        return False
+    return True
+
 if __name__ == '__main__':
     init_db()
     server = Server(app.wsgi_app)
