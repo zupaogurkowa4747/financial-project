@@ -57,8 +57,9 @@ def wyplata():
 
 @app.route('/rada', methods=['POST'])
 def rada():
+    zarobki = request.form.get('zarobki')
     suma = pobierz_sume()
-    prompt = f"Użytkownik ma w skarbcu {suma} zł. Daj mu jedną krótką radę finansową po polsku."
+    prompt = f"Użytkownik ma w skarbcu {suma} zł. Daj mu jedną krótką radę finansową po polsku, która będzie także odzwierciedlać jego zarobki {zarobki}"
     ai_rada = zapytaj_ai(prompt)
     return render_template('index.html', **dane_strony(ai_rada=ai_rada))
 
